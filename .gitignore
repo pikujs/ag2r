@@ -12,3 +12,4 @@ certs/
 .DS_Store
 .ag2r-telemetry-id
 vapid-keys.json
+result

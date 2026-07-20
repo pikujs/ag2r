@@ -36,6 +36,7 @@ buildNpmPackage rec {
     homepage = "https://github.com/the-future-company/ag2r";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ ];
+    mainProgram = "ag2r";
     platforms = lib.platforms.linux;
   };
 }
