@@ -8,7 +8,8 @@ let
   cfg = config.services.ag2r;
 in
 {
-  meta.maintainers = with lib.maintainers; [ ];
+  meta.maintainers = [ ];
+  # Contributors: https://github.com/omercanyy
 
   options.services.ag2r = {
     enable = lib.mkEnableOption "AG2R — Antigravity 2.0 Remote";
