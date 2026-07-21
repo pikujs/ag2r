@@ -7,8 +7,14 @@
   };
 
   outputs =
-    { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
         pkgJson = builtins.fromJSON (builtins.readFile ./package.json);
@@ -61,7 +67,8 @@
 
         formatter = pkgs.nixfmt;
       }
-    ) // {
+    )
+    // {
       homeManagerModules.ag2r = import ./home-manager.nix;
     };
 }
