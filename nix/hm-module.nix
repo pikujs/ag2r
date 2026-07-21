@@ -86,8 +86,8 @@ in
 
     telemetry = lib.mkOption {
       type = lib.types.bool;
-      default = true;
-      description = "Enable anonymous usage telemetry";
+      default = false;
+      description = "Enable anonymous usage telemetry (sent to developer's Firebase project)";
     };
 
     vapidEmail = lib.mkOption {

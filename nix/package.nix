@@ -1,4 +1,9 @@
-{ lib, buildNpmPackage, nodejs, makeWrapper }:
+{
+  lib,
+  buildNpmPackage,
+  nodejs,
+  makeWrapper,
+}:
 
 buildNpmPackage rec {
   pname = "ag2r";
