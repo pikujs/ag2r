@@ -62,6 +62,6 @@
         formatter = pkgs.nixfmt;
       }
     ) // {
-      homeManagerModules.ag2r = import ./nix/hm-module.nix;
+      homeManagerModules.ag2r = import ./home-manager.nix;
     };
 }
