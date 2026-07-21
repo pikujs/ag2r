@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.services.ag2r;
@@ -9,8 +14,13 @@ in
   options.services.ag2r = {
     enable = lib.mkEnableOption "AG2R — Antigravity 2.0 Remote";
 
-    package = lib.mkPackageOption pkgs "ag2r" {
-      default = [ ];
+    package = lib.mkOption {
+      type = lib.types.package;
+      description = ''
+        The ag2r package to use. Must be provided by the user
+        (e.g. from a flake input or overlay), since ag2r is not
+        part of nixpkgs.
+      '';
     };
 
     port = lib.mkOption {
@@ -70,7 +80,11 @@ in
     };
 
     ag2rEnv = lib.mkOption {
-      type = lib.types.enum [ "production" "development" "staging" ];
+      type = lib.types.enum [
+        "production"
+        "development"
+        "staging"
+      ];
       default = "production";
       description = ''
         Environment name. Controls PWA identity (name/icon) and config directory
@@ -130,7 +144,9 @@ in
         # Auth
         ++ lib.optional cfg.auth.enable "AUTH_ENABLED=true"
         ++ lib.optional (cfg.auth.enable && cfg.auth.password != "") "APP_PASSWORD=${cfg.auth.password}"
-        ++ lib.optional (cfg.auth.enable && cfg.auth.sessionSecret != "") "SESSION_SECRET=${cfg.auth.sessionSecret}"
+        ++ lib.optional (
+          cfg.auth.enable && cfg.auth.sessionSecret != ""
+        ) "SESSION_SECRET=${cfg.auth.sessionSecret}"
         # Tunnel
         ++ lib.optional cfg.tunnel.enable "TUNNEL_ENABLED=true"
         ++ lib.optional (cfg.tunnel.url != "") "TUNNEL_URL=${cfg.tunnel.url}"
