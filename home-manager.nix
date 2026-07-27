@@ -65,18 +65,15 @@ in
       };
     };
 
-    tunnel = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Enable Cloudflare tunnel mode";
-      };
-      url = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        example = "https://ag2r.yourdomain.com";
-        description = "Public URL for push notification links";
-      };
+    tunnel.url = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      example = "https://ag2r.yourdomain.com";
+      description = ''
+        Public tunnel URL. When set, AG2R automatically switches to HTTP-only mode
+        (trust proxy enabled, no TLS cert generation) and uses this URL for
+        push notification links.
+      '';
     };
 
     ag2rEnv = lib.mkOption {
