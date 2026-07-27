@@ -147,8 +147,7 @@ in
         ++ lib.optional (
           cfg.auth.enable && cfg.auth.sessionSecret != ""
         ) "SESSION_SECRET=${cfg.auth.sessionSecret}"
-        # Tunnel
-        ++ lib.optional cfg.tunnel.enable "TUNNEL_ENABLED=true"
+        # Tunnel (TUNNEL_URL also enables HTTP-only mode)
         ++ lib.optional (cfg.tunnel.url != "") "TUNNEL_URL=${cfg.tunnel.url}"
         # Debug / telemetry
         ++ lib.optional cfg.debug "AG2R_DEBUG=1"

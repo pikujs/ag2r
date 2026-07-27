@@ -77,11 +77,16 @@ Use a [Cloudflare tunnel](https://developers.cloudflare.com/cloudflare-one/conne
 > APP_PASSWORD=your-strong-password-here
 > ```
 
+> [!NOTE]
+> Setting `TUNNEL_URL` automatically switches AG2R to HTTP-only — the tunnel
+> or proxy handles TLS termination, so no self-signed certificate is needed.
+> The `--no-tls-verify` flag on cloudflared is no longer required.
+
 **Step 1 — Start the tunnel** (gets you a public URL):
 
 ```bash
 brew install cloudflared
-cloudflared tunnel --url https://localhost:3000 --no-tls-verify
+cloudflared tunnel --url http://localhost:3000
 ```
 
 Cloudflared prints a URL like `https://random-words.trycloudflare.com`.
@@ -89,7 +94,6 @@ Cloudflared prints a URL like `https://random-words.trycloudflare.com`.
 **Step 2 — Add the URL to `.env`** so push notifications work:
 
 ```bash
-TUNNEL_ENABLED=true
 TUNNEL_URL=https://random-words.trycloudflare.com   # ← paste your URL here
 ```
 
@@ -99,7 +103,7 @@ TUNNEL_URL=https://random-words.trycloudflare.com   # ← paste your URL here
 node server.js
 ```
 
-Open the tunnel URL on your phone. The URL changes each time you restart the tunnel.
+Open the tunnel URL on your phone. The URL changes each time you restart the tunnel
 ---
 
 ### Option 3: Stable URL with your own domain
@@ -120,13 +124,15 @@ credentials-file: ~/.cloudflared/<TUNNEL_ID>.json
 
 ingress:
   - hostname: ag2r.yourdomain.com
-    service: https://localhost:3000
-    originRequest:
-      noTLSVerify: true
+    service: http://localhost:3000
   - service: http_status:404
 ```
 
 Set `TUNNEL_URL=https://ag2r.yourdomain.com` in `.env`, then run `node server.js` and `cloudflared tunnel run ag2r` in separate terminals.
+
+> [!NOTE]
+> Setting `TUNNEL_URL` switches AG2R to HTTP-only, so the tunnel config
+> uses `http://localhost:3000` — no `originRequest` TLS-verify hacks needed.
 
 ## 📱 Features
 
@@ -366,6 +372,7 @@ git pull origin next
 Here is a collection of additional screenshots showcasing more subtle UI states, interactive dialogs, and legacy screen references.
 
 ### 💬 Commenting Flow Details
+
 <table align="center">
   <tr>
     <td align="center"><img src="docs/comment-selection.png" alt="Text Selection Trigger" width="300" /><br><sub>Text Selection Trigger</sub></td>
@@ -378,6 +385,7 @@ Here is a collection of additional screenshots showcasing more subtle UI states,
 </table>
 
 ### 🤖 Chat & Step Explorer States
+
 <table align="center">
   <tr>
     <td align="center"><img src="docs/chat-task-walkthrough-cards.png" alt="Task & Walkthrough Cards" width="300" /><br><sub>Task & Walkthrough Cards</sub></td>
@@ -390,6 +398,7 @@ Here is a collection of additional screenshots showcasing more subtle UI states,
 </table>
 
 ### 🔍 Review, Diff & Model Selectors
+
 <table align="center">
   <tr>
     <td align="center"><img src="docs/review-files-list.png" alt="Review Files Explorer" width="300" /><br><sub>Review Files Explorer</sub></td>
@@ -406,6 +415,7 @@ Here is a collection of additional screenshots showcasing more subtle UI states,
 </table>
 
 ### 🏛️ Legacy Screen References
+
 <table align="center">
   <tr>
     <td align="center"><img src="docs/hero-mobile.png" alt="Legacy Live Chat" width="220" /><br><sub>Legacy Live Chat</sub></td>
