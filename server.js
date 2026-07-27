@@ -205,10 +205,7 @@ async function sendPushToAll(payload) {
 	let sent = 0;
 	for (const [endpoint, sub] of pushSubscriptions) {
 		// Resolve notification click URL per-subscription from stored origin
-		const base =
-			sub.origin ||
-			TUNNEL_URL ||
-			`http${HTTP_ONLY ? "" : "s"}://localhost:${PORT}`;
+		const base = sub.origin || TUNNEL_URL || `https://localhost:${PORT}`;
 		const params = new URLSearchParams({ sidebar: "open" });
 		if (payload.conversationId)
 			params.set("conversationId", payload.conversationId);
@@ -2189,14 +2186,10 @@ async function start() {
 	await flagsReady;
 
 	server.listen(PORT, () => {
-		const proto = HTTP_ONLY ? "http" : "https";
-		log(
-			"Server",
-			`${appName} (env: ${getEnv()}) running on ${proto}://localhost:${PORT}`,
-		);
-		if (TUNNEL_URL) {
-			log("Server", `Tunnel URL: ${TUNNEL_URL}`);
-		}
+		const addr = TUNNEL_URL
+			? `http://localhost:${PORT} → ${TUNNEL_URL}`
+			: `https://localhost:${PORT}`;
+		log("Server", `${appName} (env: ${getEnv()}) ${addr}`);
 		startSession();
 	});
 
